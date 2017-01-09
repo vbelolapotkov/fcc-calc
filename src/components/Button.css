@@ -1,0 +1,8 @@
+.Button {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 32px;
+    font-family: monospace;
+}
