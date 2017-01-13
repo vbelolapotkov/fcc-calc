@@ -153,9 +153,23 @@ describe('Calculator', function () {
 
     describe('ac key', function () {
       it('should set calculator to default state', function () {
-        let {input, expression} = pressSequence(calc, ['2','1', '*', '1', '0', '=', 'ac']);
+        let {input, expression} = pressSequence(calc, ['2','1', 'x', '1', '0', '=', 'ac']);
         expect(input).to.equal('0');
         expect(expression).to.equal('0');
+      });
+    });
+
+    describe('c key', function () {
+      it('should reset current operand', function () {
+        let {input, expression} = pressSequence(calc, ['2','1', 'x', '5', 'c']);
+        expect(input).to.equal('0');
+        expect(expression).to.equal('21 x');
+      });
+
+      it('should allow enter new value for current operand', function () {
+        let {input, expression} = pressSequence(calc, ['2','1', 'x', '5', 'c', '1', '0', '=']);
+        expect(input).to.equal('210');
+        expect(expression).to.equal('21 x 10 =');
       });
     });
 

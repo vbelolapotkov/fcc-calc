@@ -142,7 +142,8 @@ export default class Calculator {
   }
 
   _resetCurrentOperand() {
-
+    this.currentOperand = 0;
+    this.input = 0;
   }
 
   _reset() {
