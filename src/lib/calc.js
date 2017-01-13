@@ -9,7 +9,6 @@ export default class Calculator {
   }
 
   getState() {
-    this._composeInput();
     this._composeExpression();
     return {
       input: this._input,
@@ -21,15 +20,8 @@ export default class Calculator {
     this._operands[this._currentOperand] = val;
   }
 
-  _composeInput() {
-    let input = '0';
-    if (this._showResult) {
-      input = this._result.toString();
-    } else {
-      const currentOperand = this._operands[this._currentOperand];
-      if (currentOperand) input = currentOperand.toString();
-    }
-    this._input = input;
+  set input(val) {
+    this._input = val.toString();
   }
 
   _composeExpression() {
@@ -64,22 +56,13 @@ export default class Calculator {
   }
 
   _pressNumberKey(key) {
-    let valStr = key;
     if (!this._isNewInput()) {
-      valStr = this._input + key;
+      this._input += key;
     } else {
       this._startNewInput = false;
+      this._input = key;
     }
-    this.currentOperand = parseFloat(valStr);
-
-
-    // if (!this._isNewInput()) {
-    //   this._input += key;
-    // } else {
-    //   this._startNewInput = false;
-    //   this._input = key;
-    // }
-    // this.currentOperand = parseFloat(this._input);
+    this.currentOperand = parseFloat(this._input);
   }
 
   _isNewInput() { return this._startNewInput; }
@@ -97,16 +80,7 @@ export default class Calculator {
     if (this._isUnaryOperationKey(key)) {
       this._pressUnaryOperationKey(key);
     } else {
-
-      if (this._operands.a && this._operands.b) {
-        this._operands.a = this._calculate();
-        this._operands.b = undefined;
-      }
-
-      this._operation = key;
-      this._operands.b = this._operands.a;
-      this._currentOperand = 'b';
-      this._startNewInput = true;
+      this._pressBinaryOperationKey(key);
     }
   }
 
@@ -115,7 +89,8 @@ export default class Calculator {
     let newValue;
     if (key === '+/-') { newValue = -currentValue; }
     if (key === '%') { newValue = currentValue/100; }
-    this.currentOperand = newValue.toString();
+    this.currentOperand = newValue;
+    this.input = newValue;
   }
 
   _pressControlKey(key) {
@@ -134,7 +109,9 @@ export default class Calculator {
   _pressEqualKey() {
     // use previous result as operand a if result exists;
     if (this._result) this._operands.a = this._result;
-    this._result = this._calculate();
+    const result = this._calculate();
+    this._result = result; //remember result when pressing = multiple times
+    this.input = result;
     this._showResult = true;
     this._currentOperand = 'a';
     this._startNewInput = true;
@@ -169,11 +146,30 @@ export default class Calculator {
   }
 
   _reset() {
-    this._currentOperand = 'a';
-    this._operands = {};
-    this._operation = '';
+    this._input = '0';
     this._result = 0;
+    this._operands = {};
+    this._currentOperand = 'a';
+    this._operation = '';
     this._startNewInput = true;
     this._showResult = false;
+  }
+
+  _pressBinaryOperationKey(key) {
+    if (this._shouldCalculateOnBinaryKey()) {
+      const result = this._calculate();
+      this._operands.a = result;
+      this._operands.b = undefined;
+      this.input = result;
+    }
+
+    this._operation = key;
+    this._operands.b = this._operands.a;
+    this._currentOperand = 'b';
+    this._startNewInput = true;
+  }
+
+  _shouldCalculateOnBinaryKey() {
+    return this._operands.a && this._operands.b;
   }
 }

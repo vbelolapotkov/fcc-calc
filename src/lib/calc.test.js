@@ -43,13 +43,13 @@ describe('Calculator', function () {
       });
 
       it('should support decimal numbers', function () {
-        let result = pressSequence(calc, ['1', '2', ',']);
-        expect(result.input).to.equal('12,');
+        let result = pressSequence(calc, ['1', '2', '.']);
+        expect(result.input).to.equal('12.');
         expect(result.expression).to.equal('12');
 
         result = calc.pressKey('5');
-        expect(result.input).to.equal('12,5');
-        expect(result.expression).to.equal('12,5');
+        expect(result.input).to.equal('12.5');
+        expect(result.expression).to.equal('12.5');
       });
     });
 
