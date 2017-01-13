@@ -51,6 +51,12 @@ describe('Calculator', function () {
         expect(result.input).to.equal('12.5');
         expect(result.expression).to.equal('12.5');
       });
+
+      it('should display 0 when 000 key is pressed', function () {
+        let result = pressSequence(calc, ['000',]);
+        expect(result.input).to.equal('0');
+        expect(result.expression).to.equal('0');
+      });
     });
 
     describe('when unary operation key is pressed', function () {
@@ -116,6 +122,12 @@ describe('Calculator', function () {
           expect(result.input).to.equal('6');
           expect(result.expression).to.equal('3 + 3 =');
         });
+
+        it('should use 0 as first operand by default when operation key pressed before digit', function () {
+          const {input, expression} = pressSequence(calc, ['+', '5', '=']);
+          expect(input).to.equal('5');
+          expect(expression).to.equal('0 + 5 =');
+        });
       });
 
       describe('-', function () {
@@ -149,6 +161,12 @@ describe('Calculator', function () {
         expect(result.input).to.equal('12');
         expect(result.expression).to.equal('9 + 3 =');
       });
+
+      it('should ignore intermediate result if new input is passed after =', function () {
+        const result = pressSequence(calc, ['1','+','2','=','5','=']);
+        expect(result.input).to.equal('7');
+        expect(result.expression).to.equal('5 + 2 =');
+      });
     });
 
     describe('ac key', function () {
@@ -163,7 +181,7 @@ describe('Calculator', function () {
       it('should reset current operand', function () {
         let {input, expression} = pressSequence(calc, ['2','1', 'x', '5', 'c']);
         expect(input).to.equal('0');
-        expect(expression).to.equal('21 x');
+        expect(expression).to.equal('21 x 0');
       });
 
       it('should allow enter new value for current operand', function () {

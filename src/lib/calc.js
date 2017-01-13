@@ -24,9 +24,9 @@ export default class Calculator {
 
   _composeExpression() {
     let expression = '';
-    if (this._operands.a) expression += this._operands.a;
+    if (this._operands.a !== undefined) expression += this._operands.a;
     if (this._operation !== '') expression += ' ' + this._operation;
-    if (this._operands.b) expression += ' ' + this._operands.b;
+    if (this._operands.b !== undefined) expression += ' ' + this._operands.b;
     if (this._showResult) expression += ' =';
     this._expression = expression.trim();
     // set to default zero when in initial state
@@ -60,6 +60,9 @@ export default class Calculator {
       this._startNewInput = false;
       this._input = key;
     }
+
+    const inputValue = parseFloat(this._input);
+    if (inputValue === 0) this._input = '0';
 
     this._storeInputAsCurrentOperand();
   }
@@ -107,7 +110,7 @@ export default class Calculator {
 
   _pressEqualKey() {
     // use previous result as operand a if result exists;
-    if (this._result) this._operands.a = this._result;
+    if (this._result !== undefined) this._operands.a = this._result;
     const result = this._calculate();
     this._result = result; //remember result when pressing = multiple times
     this.input = result;
@@ -149,8 +152,11 @@ export default class Calculator {
 
   _reset() {
     this._input = '0';
-    this._result = 0;
-    this._operands = {};
+    this._result = undefined;
+    this._operands = {
+      a: 0,
+      b: undefined
+    };
     this._currentOperand = 'a';
     this._operation = '';
     this._startNewInput = true;
