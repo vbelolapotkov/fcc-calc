@@ -173,6 +173,19 @@ describe('Calculator', function () {
       });
     });
 
+    describe('<- key', function () {
+      it('should remove last digit from the input', function () {
+        let {input, expression} = pressSequence(calc, ['2','1', '<-']);
+        expect(input).to.equal('2');
+        expect(expression).to.equal('2');
+      });
+
+      it('should set input to 0 when last digin removed', function () {
+        let {input, expression} = pressSequence(calc, ['2', '<-']);
+        expect(input).to.equal('0');
+        expect(expression).to.equal('0');
+      });
+    });
   });
 });
 

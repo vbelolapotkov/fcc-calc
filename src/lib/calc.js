@@ -16,13 +16,11 @@ export default class Calculator {
     }
   }
 
-  set currentOperand(val) {
-    this._operands[this._currentOperand] = val;
-  }
+  set currentOperand(val) { this._operands[this._currentOperand] = val; }
 
-  set input(val) {
-    this._input = val.toString();
-  }
+  set input(val) { this._input = val.toString(); }
+
+  get input() { return parseFloat(this._input); }
 
   _composeExpression() {
     let expression = '';
@@ -56,13 +54,14 @@ export default class Calculator {
   }
 
   _pressNumberKey(key) {
-    if (!this._isNewInput()) {
+    if (!this._isNewInput() && this._input !== '0') {
       this._input += key;
     } else {
       this._startNewInput = false;
       this._input = key;
     }
-    this.currentOperand = parseFloat(this._input);
+
+    this._storeInputAsCurrentOperand();
   }
 
   _isNewInput() { return this._startNewInput; }
@@ -85,7 +84,7 @@ export default class Calculator {
   }
 
   _pressUnaryOperationKey(key) {
-    let currentValue = parseFloat(this._input);
+    let currentValue = this.input;
     let newValue;
     if (key === '+/-') { newValue = -currentValue; }
     if (key === '%') { newValue = currentValue/100; }
@@ -138,12 +137,14 @@ export default class Calculator {
   }
 
   _removeDigit() {
-
+    this._input = this._input.slice(0, -1);
+    if (this._input === '') this._input = '0';
+    this._storeInputAsCurrentOperand();
   }
 
   _resetCurrentOperand() {
-    this.currentOperand = 0;
     this.input = 0;
+    this._storeInputAsCurrentOperand();
   }
 
   _reset() {
@@ -172,5 +173,9 @@ export default class Calculator {
 
   _shouldCalculateOnBinaryKey() {
     return this._operands.a && this._operands.b;
+  }
+
+  _storeInputAsCurrentOperand() {
+    this.currentOperand = this.input;
   }
 }
