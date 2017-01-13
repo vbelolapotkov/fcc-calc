@@ -56,12 +56,8 @@ export default class Calculator {
   _pressNumberKey(key) {
     const oldInput = this._input;
 
-    if (!this._startNewInput && this._input !== '0') {
-      if (key !== '.' || this._inputIsNotDecimalYet())
-        this._input += key;
-    } else {
+    if (this._startNewInput || this._input === '0') {
       this._startNewInput = false;
-
       switch (key) {
         case '000': this._input = '0';
         break;
@@ -69,9 +65,11 @@ export default class Calculator {
         break;
         default: this._input = key;
       }
+    } else if (key !== '.' || this._inputIsNotDecimalYet()) {
+      this._input += key;
     }
 
-    if (this.input === NaN) {
+    if (Number.isNaN(this.input)) {
       this._input = oldInput;
     }
     this._storeInputAsCurrentOperand();
