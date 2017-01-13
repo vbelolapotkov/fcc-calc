@@ -57,6 +57,18 @@ describe('Calculator', function () {
         expect(result.input).to.equal('0');
         expect(result.expression).to.equal('0');
       });
+
+      it('should display 0. when input starts with . key', function () {
+        let {input, expression} = calc.pressKey('.');
+        expect(input).to.equal('0.');
+        expect(expression).to.equal('0');
+      });
+
+      it('should skip adding multiple . in a number', function () {
+        let result = pressSequence(calc, ['.','.','1','2','.','3','.']);
+        expect(result.input).to.equal('0.123');
+        expect(result.expression).to.equal('0.123');
+      });
     });
 
     describe('when unary operation key is pressed', function () {
@@ -188,6 +200,12 @@ describe('Calculator', function () {
         let {input, expression} = pressSequence(calc, ['2','1', 'x', '5', 'c', '1', '0', '=']);
         expect(input).to.equal('210');
         expect(expression).to.equal('21 x 10 =');
+      });
+
+      it('should set 0 as first operand if pressed after =', function () {
+        let {input, expression} = pressSequence(calc, ['2', 'x', '5', '=', 'c', '=']);
+        expect(input).to.equal('0');
+        expect(expression).to.equal('0 x 5 =');
       });
     });
 

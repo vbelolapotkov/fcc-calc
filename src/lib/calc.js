@@ -54,21 +54,32 @@ export default class Calculator {
   }
 
   _pressNumberKey(key) {
-    if (!this._isNewInput() && this._input !== '0') {
-      this._input += key;
+    const oldInput = this._input;
+
+    if (!this._startNewInput && this._input !== '0') {
+      if (key !== '.' || this._inputIsNotDecimalYet())
+        this._input += key;
     } else {
       this._startNewInput = false;
-      this._input = key;
+
+      switch (key) {
+        case '000': this._input = '0';
+        break;
+        case '.': this._input = '0.';
+        break;
+        default: this._input = key;
+      }
     }
 
-    const inputValue = parseFloat(this._input);
-    if (inputValue === 0) this._input = '0';
-
+    if (this.input === NaN) {
+      this._input = oldInput;
+    }
     this._storeInputAsCurrentOperand();
   }
 
-  _isNewInput() { return this._startNewInput; }
-
+  _inputIsNotDecimalYet() {
+    return this._input.indexOf('.') < 0;
+  }
 
   _isUnaryOperationKey(key) {
     return this.UNARY_KEYS.indexOf(key) >= 0;
@@ -110,7 +121,7 @@ export default class Calculator {
 
   _pressEqualKey() {
     // use previous result as operand a if result exists;
-    if (this._result !== undefined) this._operands.a = this._result;
+    if (this._result !== undefined && this._startNewInput) this._operands.a = this._result;
     const result = this._calculate();
     this._result = result; //remember result when pressing = multiple times
     this.input = result;
@@ -148,6 +159,8 @@ export default class Calculator {
   _resetCurrentOperand() {
     this.input = 0;
     this._storeInputAsCurrentOperand();
+    this._startNewInput = true;
+    this._result = undefined;
   }
 
   _reset() {
