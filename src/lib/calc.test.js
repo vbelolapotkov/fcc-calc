@@ -232,6 +232,14 @@ describe('Calculator', function () {
         expect(expression).to.equal('0');
       });
     });
+    
+    describe('unknown key', function () {
+      let key = '!';
+      it('should not change input', function () {
+        const result = calc.pressKey(key);
+        expect(result.input).to.equal('0');
+      });
+    });
   });
 });
 

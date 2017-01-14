@@ -4,7 +4,6 @@ export default class Calculator {
     this.UNARY_KEYS = ['+/-', '%'];
     this.BINARY_KEYS = ['+', '-', 'x', '/'];
     this.CONTROL_KEYS = ['=', '<-', 'c', 'ac'];
-    // this.KNOWN_KEYS = this.NUMBER_KEYS.concat(this.UNARY_KEYS, this.BINARY_KEYS, this.OTHER_KEYS);
     this._reset();
   }
 
