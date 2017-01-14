@@ -36,5 +36,6 @@ function renderButtonsRow(row, rowNumber, handler) {
 }
 
 function renderButton(button, col, row, handler) {
-  return <Button key={`Keypad-btn-${row}-${col}`} text={button} onClick={handler}/>
+  const size = button === '=' ? 3 : 1;
+  return <Button key={`Keypad-btn-${row}-${col}`} size={size} text={button} onClick={handler}/>
 }

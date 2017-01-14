@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #222;
+  background-color: #e68a19;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -8,19 +8,26 @@
 
 .App-header {
   padding: 20px;
-  color: white;
+  color: #222;
 }
 
 .App-container {
   flex: 1;
-  padding: 0 15px;
 }
 
 .App-footer {
+  margin-top: 20px;
   padding: 20px;
-  color: gray;
+  background-color: #222;
+  color: #696969;
+  font-size: 0.9em;
 }
 
-.App-footer a {
+a,a:visited,a:active,a:focus {
   text-decoration: none;
+  color: #e68a19;
+}
+
+a:hover {
+  color: darkorange;
 }

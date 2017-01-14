@@ -1,8 +1,11 @@
 .Screen-container {
-    padding: 5px;
+    padding: 10px 5px;
     text-align: right;
-    border: 1px solid #222;
     font-family: monospace;
+    color: #fff;
+    background-color: #222;
+    border: 1px solid #fff;
+    box-sizing: border-box;
 }
 
 .Screen-input {
