@@ -9,10 +9,22 @@ export default class Calc extends React.Component {
     super();
     this.state = {
       input: '0',
-      expression: ''
+      expression: '',
+      display: 'landscape'
     };
     this._calc = new Calculator();
   }
+
+  componentDidMount() {
+    window.addEventListener('resize', () => this.updateDisplayMode());
+    this.updateDisplayMode();
+  }
+
+  updateDisplayMode() {
+    const body = document.body;
+    const display = body.clientWidth >= 480 || body.clientWidth > body.clientHeight ? 'landscape' : 'portrait';
+    this.setState({display});
+  };
 
   handleKeyPressed(key) {
     const { input, expression } = this._calc.pressKey(key);
@@ -23,7 +35,7 @@ export default class Calc extends React.Component {
     return (
       <div className="Calc">
         <Screen input={this.state.input} expression={this.state.expression}/>
-        <Keypad display="landscape" onKeyPressed={this.handleKeyPressed.bind(this)}/>
+        <Keypad display={this.state.display} onKeyPressed={this.handleKeyPressed.bind(this)}/>
       </div>
     );
   }
