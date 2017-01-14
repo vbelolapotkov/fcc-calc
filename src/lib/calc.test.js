@@ -179,6 +179,16 @@ describe('Calculator', function () {
         expect(result.input).to.equal('7');
         expect(result.expression).to.equal('5 + 2 =');
       });
+
+      it('should calculate sequence of operations divided by = independetly', function () {
+        let result = pressSequence(calc, ['1','+','2','=']);
+        expect(result.input).to.equal('3');
+        expect(result.expression).to.equal('1 + 2 =');
+
+        result = pressSequence(calc, ['5','x','4','=']);
+        expect(result.input).to.equal('20');
+        expect(result.expression).to.equal('5 x 4 =');
+      });
     });
 
     describe('ac key', function () {

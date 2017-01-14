@@ -189,7 +189,7 @@ export default class Calculator {
   }
 
   _shouldCalculateOnBinaryKey() {
-    return this._operands.a && this._operands.b;
+    return this._operands.a && this._operands.b && this._currentOperand === 'b';
   }
 
   _storeInputAsCurrentOperand() {
