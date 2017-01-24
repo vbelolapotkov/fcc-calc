@@ -1,5 +1,6 @@
 import React from 'react';
 import Calculator from '../lib/calc';
+import {getKey} from '../lib/get-key';
 import Screen from './Screen';
 import Keypad from './Keypad';
 import './Calc.css';
@@ -16,7 +17,8 @@ export default class Calc extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', () => this.updateDisplayMode());
+    window.addEventListener('resize', this.updateDisplayMode.bind(this));
+    window.addEventListener('keydown', this.handleKeyboardEvent.bind(this));
     this.updateDisplayMode();
   }
 
@@ -25,6 +27,12 @@ export default class Calc extends React.Component {
     const display = body.clientWidth >= 480 || body.clientWidth > body.clientHeight ? 'landscape' : 'portrait';
     this.setState({display});
   };
+
+  handleKeyboardEvent(event) {
+    const key = getKey(event);
+    if (!key) return;
+    this.handleKeyPressed(key);
+  }
 
   handleKeyPressed(key) {
     const { input, expression } = this._calc.pressKey(key);
