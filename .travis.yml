@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - lts/erbium
+
+install:
+  - npm ci
+
+script:
+  - npm test
+
+branches:
+  only:
+    - master
